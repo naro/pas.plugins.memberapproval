@@ -18,21 +18,7 @@ long_description = (
     '**************\n'
     + '\n' +
     read('docs', 'CHANGES.txt')
-    + '\n' +
-    'Detailed Documentation\n'
-    '**********************\n'
-    + '\n' +
-    read('pas',
-         'plugins',
-         'memberapproval', 'README.txt')
-    + '\n' +
-    'Contributors\n'
-    '************\n'
-    + '\n' +
-    read('docs', 'CONTRIBUTORS.txt')
-    + '\n' +
-    'Download\n'
-    '********\n')
+    + '\n')
 
 setup(name='pas.plugins.memberapproval',
       version=version,
@@ -50,20 +36,20 @@ setup(name='pas.plugins.memberapproval',
       author_email='novotny.radim@gmail.com',
       url='http://svn.plone.org/svn/collective/',
       license='GPL',
+      namespace_packages=['pas', 'pas.plugins'],
       packages=find_packages('src', exclude=['ez_setup']),
       package_dir = {'':'src'},
-      namespace_packages=['pas', 'pas.plugins'],
-      include_package_data=True,
-      zip_safe=False,
-      install_requires=['setuptools',
-                        # -*- Extra requirements: -*-
-                        ],
       extras_require = {
           'test': [
               'plone.app.testing',
               'interlude',
           ]
-      },  
+      }, 
+      include_package_data=True,
+      zip_safe=False,
+      install_requires=['setuptools',
+                        # -*- Extra requirements: -*-
+                        ],
       entry_points="""
       # -*- entry_points -*-
 
