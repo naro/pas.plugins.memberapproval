@@ -14,30 +14,34 @@ def getApprovalPlugin():
         if IMemberapprovalPlugin.providedBy(plugin):
             return plugin
 
-    raise KeyError
+    raise KeyError('Could not find installed member approval PAS plugin')
 
 def getSourceUsersPlugin():
     pas=getPAS()
     if 'source_users' in pas.objectIds():
         return pas['source_users']
-    raise KeyError
+    return None
 
 def enablePluginInterfaces():
     # This plugin completely replaces source_users plugin!
     plugin=getApprovalPlugin()
+
     source_users = getSourceUsersPlugin()
     
     common_interfaces = [
             'IUserEnumerationPlugin',
             'IAuthenticationPlugin',
             'IUserAdderPlugin',
+            'IUserManagement', 
+            'IUserIntrospection',
             ]
 
 
     # deactivate source_users but activate new plugin
     plugin.manage_activateInterfaces(common_interfaces)
-    # Deactivate all interfaces from source_users.
-    source_users.manage_activateInterfaces([])
+    if source_users is not None:
+        # Deactivate all interfaces from source_users.
+        source_users.manage_activateInterfaces([])
 
     # Probably no need for move plugin up
     # plugins=getPAS().plugins

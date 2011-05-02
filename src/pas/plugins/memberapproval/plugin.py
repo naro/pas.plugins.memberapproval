@@ -8,7 +8,7 @@ from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import default__class_init__ as InitializeClass
 
 from Products.PluggableAuthService.utils import classImplements
-from Products.PluggableAuthService.plugins.ZODBUserManager import ZODBUserManager
+from Products.PlonePAS.plugins.user import UserManager
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
 from Products.PluggableAuthService.interfaces.plugins import IUserAdderPlugin
@@ -16,7 +16,7 @@ from Products.PluggableAuthService.utils import createViewName
 
 from pas.plugins.memberapproval.interfaces import IMemberapprovalPlugin
 
-class MemberapprovalPlugin(ZODBUserManager):
+class MemberapprovalPlugin(UserManager):
     """Multi-plugin
 
     """
