@@ -15,14 +15,14 @@ class MemberApprovalTestSuite(PloneSandboxLayer):
         import pas.plugins.memberapproval
         xmlconfig.file('configure.zcml', pas.plugins.memberapproval, context=configurationContext)
 
-    def setUpPloneSite(self, portal):
-        # Install into Plone site using portal_setup
-        # applyProfile(portal, 'pas.plugins.memberapproval:default')
-        pass
-
-    def tearDownZope(self, app):
-        pass
-
+    # def setUpPloneSite(self, portal):
+    #     # Install into Plone site using portal_setup
+    #     # applyProfile(portal, 'pas.plugins.memberapproval:default')
+    #     pass
+    # 
+    # def tearDownZope(self, app):
+    #     pass
+    # 
 
 
 MEMBERAPPROVAL_FIXTURE = MemberApprovalTestSuite()

@@ -1,4 +1,4 @@
-from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
+from zope.interface import Interface
   
-class IMemberapprovalPlugin(IAuthenticationPlugin):
+class IMemberapprovalPlugin(Interface):
     """interface for MemberapprovalPlugin."""
