@@ -31,13 +31,13 @@ def enablePluginInterfaces():
     source_users = getSourceUsersPlugin()
     
     common_interfaces = [
+            'IMemberApprovalPlugin',
             'IUserEnumerationPlugin',
             'IAuthenticationPlugin',
             'IUserAdderPlugin',
             'IUserManagement', 
             'IUserIntrospection',
             ]
-
 
     # deactivate source_users but activate new plugin
     plugin.manage_activateInterfaces(common_interfaces)

@@ -3,6 +3,7 @@ import unittest2 as unittest
 from pas.plugins.memberapproval.tests.layer import MEMBERAPPROVAL_INTEGRATION_TESTING
 from pas.plugins.memberapproval.install import manage_add_memberapproval_plugin
 from pas.plugins.memberapproval.utils import enablePluginInterfaces, getPAS
+from pas.plugins.memberapproval.interfaces import IMemberApprovalPlugin
 from plone.app.testing import TEST_USER_ROLES
 
 USER_ID = 'user_1'
@@ -72,3 +73,8 @@ class PluginTest(unittest.TestCase):
         self.plugin.unapproveUser(USER_ID)
         r = self.plugin.enumerateUsers(approved=False)
         self.assertEqual(len(r), 2)
+
+    def test_plugin_registered(self):
+        plugins = self.portal.acl_users['plugins']
+        my_plugin_id = self.plugin.getId()
+        self.failUnless(my_plugin_id in plugins.listPluginIds(IMemberApprovalPlugin))
