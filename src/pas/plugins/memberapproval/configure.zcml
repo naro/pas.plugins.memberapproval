@@ -2,9 +2,24 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     i18n_domain="pas.plugins.memberapproval">
 
   <five:registerPackage package="." initialize=".initialize" />
   <include package=".browser" />
 
+  <genericsetup:registerProfile
+      name="default"
+      title="pas.plugins.memberapproval"
+      directory="profiles/default"
+      description="Installs the memberapproval plugin"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:importStep
+        name="PASPluginMemberApprovalSetupVarious"
+        title="PAS Plugin Member Approval setup"
+        description="Setup Member approval plugin"
+        handler=".setuphandlers.setupVarious"
+        />
 </configure>

@@ -51,11 +51,12 @@ class PluginTest(unittest.TestCase):
         self.failIf(r is None)
 
     def testEnumerate(self):
-        self.assertEqual(len(self.plugin.enumerateUsers()), 1)
+        # 2 users total = TEST_USER and USER created in setUp
+        self.assertEqual(len(self.plugin.enumerateUsers()), 2)
 
         # No approval query - return all
         self.plugin.unapproveUser(USER_ID)
-        self.assertEqual(len(self.plugin.enumerateUsers()), 1)
+        self.assertEqual(len(self.plugin.enumerateUsers()), 2)
 
         # Only approved
         r = self.plugin.enumerateUsers(approved=True)
@@ -66,9 +67,8 @@ class PluginTest(unittest.TestCase):
         self.assertEqual(len(r), 1)
 
         r = self.plugin.enumerateUsers(approved=False)
-        self.assertEqual(len(r), 0)
+        self.assertEqual(len(r), 1)
         
         self.plugin.unapproveUser(USER_ID)
         r = self.plugin.enumerateUsers(approved=False)
-        self.assertEqual(len(r), 1)
-        
+        self.assertEqual(len(r), 2)
