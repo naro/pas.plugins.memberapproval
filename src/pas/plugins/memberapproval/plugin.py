@@ -50,6 +50,10 @@ class MemberapprovalPlugin(UserManager):
 
         return None
 
+    security.declarePrivate( 'userApproved' )
+    def userApproved(self, user_id):
+        return self._activated_userid.get(user_id, False)
+
     security.declarePrivate( 'approveUser' )
     def approveUser(self, user_id):
         self._activated_userid[user_id] = True

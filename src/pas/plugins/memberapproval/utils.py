@@ -1,7 +1,9 @@
+from copy import deepcopy
 from zope.app.component.hooks import getSite
 from Products.CMFCore.utils import getToolByName
 from pas.plugins.memberapproval.plugin import MemberapprovalPlugin
 from pas.plugins.memberapproval.interfaces import IMemberapprovalPlugin
+from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 
 def getPAS():
     site=getSite()
@@ -40,8 +42,16 @@ def enablePluginInterfaces():
     # deactivate source_users but activate new plugin
     plugin.manage_activateInterfaces(common_interfaces)
     if source_users is not None:
+        su_was_active = source_users.getId() in \
+                            getPAS()['plugins'].listPluginIds(IAuthenticationPlugin)
         # Deactivate all interfaces from source_users.
         source_users.manage_activateInterfaces([])
+        # if source users was active plugin for authentication, 
+        # migrate all data from it to approval plugin
+        if su_was_active:
+            plugin._user_passwords = deepcopy(source_users._user_passwords)
+            plugin._login_to_userid = deepcopy(source_users._login_to_userid)
+            plugin._userid_to_login = deepcopy(source_users._userid_to_login)
 
     # Probably no need for move plugin up
     # plugins=getPAS().plugins
