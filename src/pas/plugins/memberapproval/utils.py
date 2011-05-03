@@ -2,7 +2,7 @@ from copy import deepcopy
 from zope.app.component.hooks import getSite
 from Products.CMFCore.utils import getToolByName
 from pas.plugins.memberapproval.plugin import MemberapprovalPlugin
-from pas.plugins.memberapproval.interfaces import IMemberapprovalPlugin
+from pas.plugins.memberapproval.interfaces import IMemberApprovalPlugin
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
 
 def getPAS():
@@ -13,7 +13,7 @@ def getPAS():
 def getApprovalPlugin():
     pas=getPAS()
     for plugin in pas.objectValues([MemberapprovalPlugin.meta_type,]):
-        if IMemberapprovalPlugin.providedBy(plugin):
+        if IMemberApprovalPlugin.providedBy(plugin):
             return plugin
 
     raise KeyError('Could not find installed member approval PAS plugin')

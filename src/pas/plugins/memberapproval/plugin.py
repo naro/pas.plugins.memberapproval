@@ -14,13 +14,13 @@ from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlu
 from Products.PluggableAuthService.interfaces.plugins import IUserAdderPlugin
 from Products.PluggableAuthService.utils import createViewName
 
-from pas.plugins.memberapproval.interfaces import IMemberapprovalPlugin
+from pas.plugins.memberapproval.interfaces import IMemberApprovalPlugin
 
 class MemberapprovalPlugin(UserManager):
     """Multi-plugin
 
     """
-    implements(IMemberapprovalPlugin)
+    implements(IMemberApprovalPlugin)
     meta_type = 'memberapproval Plugin'
     security = ClassSecurityInfo()
 
