@@ -38,7 +38,7 @@ class PluginTest(unittest.TestCase):
         self.failUnless('source_users' in pas.objectIds())
 
     def testLogin(self):
-        self.plugin.unapproveUser(USER_ID)
+        self.plugin.disapproveUser(USER_ID)
         r = self.plugin.authenticateCredentials(dict(
             login=USER_ID,
             password = USER_PASSWORD
@@ -58,7 +58,7 @@ class PluginTest(unittest.TestCase):
         self.assertEqual(len(self.plugin.enumerateUsers()), 2)
 
         # No approval query - return all
-        self.plugin.unapproveUser(USER_ID)
+        self.plugin.disapproveUser(USER_ID)
         self.assertEqual(len(self.plugin.enumerateUsers()), 2)
 
         # Only approved
@@ -72,7 +72,7 @@ class PluginTest(unittest.TestCase):
         r = self.plugin.enumerateUsers(approved=False)
         self.assertEqual(len(r), 1)
         
-        self.plugin.unapproveUser(USER_ID)
+        self.plugin.disapproveUser(USER_ID)
         r = self.plugin.enumerateUsers(approved=False)
         self.assertEqual(len(r), 2)
 
@@ -88,7 +88,7 @@ class PluginTest(unittest.TestCase):
         def user_approved_handler(event):
             self.assertEqual(event.userid, USER_ID)
             
-        self.plugin.unapproveUser(USER_ID)
+        self.plugin.disapproveUser(USER_ID)
         gsm = getGlobalSiteManager()
         gsm.registerHandler(user_approved_handler)
         self.plugin.approveUser(USER_ID)
@@ -104,5 +104,5 @@ class PluginTest(unittest.TestCase):
         self.plugin.approveUser(USER_ID)
         gsm = getGlobalSiteManager()
         gsm.registerHandler(user_disapproved_handler)
-        self.plugin.unapproveUser(USER_ID)
+        self.plugin.disapproveUser(USER_ID)
         gsm.unregisterHandler(user_disapproved_handler)

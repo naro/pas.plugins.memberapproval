@@ -9,6 +9,6 @@ class IMemberApprovalPlugin(Interface):
     def approveUser(user_id):
         """ Approve particular user """
 
-    def unapproveUser( user_id):
-        """ Unapprove particular user """
+    def disapproveUser( user_id):
+        """ Disnapprove particular user """
 

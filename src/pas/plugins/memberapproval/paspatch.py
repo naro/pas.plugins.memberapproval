@@ -23,13 +23,13 @@ def approveUser(self, user_id):
             pass
 PluggableAuthService.approveUser = approveUser
 
-def unapproveUser(self, user_id):
+def disapproveUser(self, user_id):
     plugins = self._getOb('plugins')
     approvals = plugins.listPlugins(IMemberApprovalPlugin)
     for plugin_id, plugin in approvals:
         try:
-            return plugin.unapproveUser( user_id )
+            return plugin.disapproveUser( user_id )
         except _SWALLOWABLE_PLUGIN_EXCEPTIONS:
             pass
-PluggableAuthService.unapproveUser = unapproveUser
+PluggableAuthService.disapproveUser = disapproveUser
 

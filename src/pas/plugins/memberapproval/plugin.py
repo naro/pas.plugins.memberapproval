@@ -67,8 +67,8 @@ class MemberapprovalPlugin(UserManager):
             self._activated_userid[user_id] = True
             notify(UserApprovedEvent(portal, user_id))
 
-    security.declarePrivate( 'unapproveUser' )
-    def unapproveUser(self, user_id):
+    security.declarePrivate( 'disapproveUser' )
+    def disapproveUser(self, user_id):
         portal = getUtility(IPloneSiteRoot)
         if self.userApproved(user_id):
             self._activated_userid[user_id] = False
