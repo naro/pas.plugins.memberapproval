@@ -8,8 +8,7 @@ from zope.interface import implements
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import default__class_init__ as InitializeClass
 
-from zope.component import getUtility
-from Products.CMFPlone.interfaces import IPloneSiteRoot
+from Products.CMFCore.utils import getToolByName
 from Products.PluggableAuthService.utils import classImplements
 from Products.PlonePAS.plugins.user import UserManager
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
@@ -62,14 +61,16 @@ class MemberapprovalPlugin(UserManager):
 
     security.declarePrivate( 'approveUser' )
     def approveUser(self, user_id):
-        portal = getUtility(IPloneSiteRoot)
+        purl = getToolByName(self, 'portal_url')
+        portal = purl.getPortalObject()
         if not self.userApproved(user_id):
             self._activated_userid[user_id] = True
             notify(UserApprovedEvent(portal, user_id))
 
     security.declarePrivate( 'disapproveUser' )
     def disapproveUser(self, user_id):
-        portal = getUtility(IPloneSiteRoot)
+        purl = getToolByName(self, 'portal_url')
+        portal = purl.getPortalObject()
         if self.userApproved(user_id):
             self._activated_userid[user_id] = False
             notify(UserDisapprovedEvent(portal, user_id))
