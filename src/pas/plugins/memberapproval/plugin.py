@@ -3,10 +3,13 @@
 
 import copy
 from BTrees.OOBTree import OOBTree
+from zope.event import notify
 from zope.interface import implements
 from AccessControl.SecurityInfo import ClassSecurityInfo
 from App.class_init import default__class_init__ as InitializeClass
 
+from zope.component import getUtility
+from Products.CMFPlone.interfaces import IPloneSiteRoot
 from Products.PluggableAuthService.utils import classImplements
 from Products.PlonePAS.plugins.user import UserManager
 from Products.PluggableAuthService.interfaces.plugins import IAuthenticationPlugin
@@ -15,6 +18,9 @@ from Products.PluggableAuthService.interfaces.plugins import IUserAdderPlugin
 from Products.PluggableAuthService.utils import createViewName
 
 from pas.plugins.memberapproval.interfaces import IMemberApprovalPlugin
+from pas.plugins.memberapproval.events import UserApprovedEvent
+from pas.plugins.memberapproval.events import UserDisapprovedEvent
+
 
 class MemberapprovalPlugin(UserManager):
     """Multi-plugin
@@ -56,11 +62,17 @@ class MemberapprovalPlugin(UserManager):
 
     security.declarePrivate( 'approveUser' )
     def approveUser(self, user_id):
-        self._activated_userid[user_id] = True
+        portal = getUtility(IPloneSiteRoot)
+        if not self.userApproved(user_id):
+            self._activated_userid[user_id] = True
+            notify(UserApprovedEvent(portal, user_id))
 
     security.declarePrivate( 'unapproveUser' )
     def unapproveUser(self, user_id):
-        self._activated_userid[user_id] = False
+        portal = getUtility(IPloneSiteRoot)
+        if self.userApproved(user_id):
+            self._activated_userid[user_id] = False
+            notify(UserDisapprovedEvent(portal, user_id))
 
     security.declarePrivate( 'addUser' )
     def addUser( self, user_id, login_name, password ):

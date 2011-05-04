@@ -3,6 +3,8 @@ import unittest2 as unittest
 from pas.plugins.memberapproval.tests.layer import MEMBERAPPROVAL_INTEGRATION_TESTING
 from pas.plugins.memberapproval.install import manage_add_memberapproval_plugin
 from pas.plugins.memberapproval.utils import enablePluginInterfaces, getPAS
+from pas.plugins.memberapproval.events import IUserApprovedEvent
+from pas.plugins.memberapproval.events import IUserDisapprovedEvent
 from pas.plugins.memberapproval.interfaces import IMemberApprovalPlugin
 from plone.app.testing import TEST_USER_ROLES
 
@@ -78,3 +80,29 @@ class PluginTest(unittest.TestCase):
         plugins = self.portal.acl_users['plugins']
         my_plugin_id = self.plugin.getId()
         self.failUnless(my_plugin_id in plugins.listPluginIds(IMemberApprovalPlugin))
+
+    def test_event_approve(self):
+        from zope.component import adapter
+        from zope.component import getGlobalSiteManager
+        @adapter(IUserApprovedEvent)
+        def user_approved_handler(event):
+            self.assertEqual(event.userid, USER_ID)
+            
+        self.plugin.unapproveUser(USER_ID)
+        gsm = getGlobalSiteManager()
+        gsm.registerHandler(user_approved_handler)
+        self.plugin.approveUser(USER_ID)
+        gsm.unregisterHandler(user_approved_handler)
+
+    def test_event_disapprove(self):
+        from zope.component import adapter
+        from zope.component import getGlobalSiteManager
+        @adapter(IUserDisapprovedEvent)
+        def user_disapproved_handler(event):
+            self.assertEqual(event.userid, USER_ID)
+            
+        self.plugin.approveUser(USER_ID)
+        gsm = getGlobalSiteManager()
+        gsm.registerHandler(user_disapproved_handler)
+        self.plugin.unapproveUser(USER_ID)
+        gsm.unregisterHandler(user_disapproved_handler)
